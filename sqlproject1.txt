@@ -1,0 +1,150 @@
+TRIGGERS
+
+TABLE: FACE
+1) CREATE DEFINER=`root`@`localhost` TRIGGER `face_AFTER_INSERT` AFTER INSERT ON `face` FOR EACH ROW BEGIN
+ declare id int;
+ set id = new.id_no;
+ insert into info(id_no) values (id);
+END
+
+TABLE: l_l
+1) CREATE DEFINER=`root`@`localhost` TRIGGER `l_l_BEFORE_INSERT` BEFORE INSERT ON `l_l` FOR EACH ROW BEGIN
+ declare id int;
+ set id = new.SrNo;
+ insert into l_l_audit values (id,cast(now() as char(20)),'inserted');
+END
+
+2) CREATE DEFINER=`root`@`localhost` TRIGGER `l_l_AFTER_UPDATE` AFTER UPDATE ON `l_l` FOR EACH ROW BEGIN
+declare audit_string char(50);
+set audit_string=cast(new.SrNo as char(5));
+
+if old.SrNo <> new.SrNo then set audit_string=concat(audit_string,'id changed');
+end if;
+if old.question <> new.question then set audit_string=concat(audit_string,' question changed');
+end if;
+if old.answer <> new.answer then set audit_string=concat(audit_string,' answer changed');
+end if;
+if old.attribute <> new.attribute then set audit_string=concat(audit_string,' attribute changed');
+end if;
+insert into l_l_audit values (new.SrNo , audit_string, 'updated');
+END
+
+3) CREATE DEFINER=`root`@`localhost` TRIGGER `l_l_BEFORE_DELETE` BEFORE DELETE ON `l_l` FOR EACH ROW BEGIN
+declare id int;
+set id=old.SrNo;
+insert into l_l_audit values(id,concat('record was deleted at ',cast(now() as char(25))),'deleted');
+END
+
+table: pointer
+1) CREATE DEFINER=`root`@`localhost` TRIGGER `pointer_BEFORE_INSERT` BEFORE INSERT ON `pointer` FOR EACH ROW BEGIN
+declare id int;
+set id=new.Srno;
+insert into pointer_audit values (id, cast(now() as char(20)),"inserted");
+END
+2) CREATE DEFINER=`root`@`localhost` TRIGGER `pointer_AFTER_UPDATE` AFTER UPDATE ON `pointer` FOR EACH ROW BEGIN
+
+declare audit_string char(50);
+set audit_string=cast(new.SrNo as char(5));
+
+if old.SrNo <> new.SrNo then set audit_string=concat(audit_string,'id changed from');
+end if;
+if old.question <> new.question then set audit_string=concat(audit_string,' question changed');
+end if;
+if old.answer <> new.answer then set audit_string=concat(audit_string,' answer changed');
+end if;
+if old.attribute <> new.attribute then set audit_string=concat(audit_string,' attribute changed');
+end if;
+
+insert into pointer_audit values (new.SrNo , audit_string, 'updated');
+
+END
+3) CREATE DEFINER=`root`@`localhost` TRIGGER `pointer_BEFORE_DELETE` BEFORE DELETE ON `pointer` FOR EACH ROW BEGIN
+declare id int;
+set id=old.SrNo;
+insert into pointer_audit values(id,concat('record was deleted at ',cast(now() as char(25))),'deleted');
+END
+
+table: queue
+1) CREATE DEFINER=`root`@`localhost` TRIGGER `queue_BEFORE_INSERT` BEFORE INSERT ON `queue` FOR EACH ROW BEGIN
+declare id int;
+set id=new.SrNo;
+insert into queue_audit values (id, cast(now() as char(15)),"inserted");
+END
+2) CREATE DEFINER=`root`@`localhost` TRIGGER `queue_AFTER_UPDATE` AFTER UPDATE ON `queue` FOR EACH ROW BEGIN
+declare audit_string char(50);
+set audit_string=cast(new.SrNo as char(5));
+
+if old.SrNo <> new.SrNo then set audit_string=concat(audit_string,'id changed');
+end if;
+if old.question <> new.question then set audit_string=concat(audit_string,' question changed');
+end if;
+if old.answer <> new.answer then set audit_string=concat(audit_string,' answer changed');
+end if;
+if old.attribute <> new.attribute then set audit_string=concat(audit_string,' attribute changed');
+end if;
+
+insert into queue_audit values (new.SrNo , audit_string, 'updated');
+
+END
+3) CREATE DEFINER=`root`@`localhost` TRIGGER `queue_BEFORE_DELETE` BEFORE DELETE ON `queue` FOR EACH ROW BEGIN
+declare id int;
+set id=old.SrNo;
+insert into queue_audit values(id,concat('record was deleted at ',cast(now() as char(25))),'deleted');
+END
+
+table: stack
+1) CREATE DEFINER=`root`@`localhost` TRIGGER `stack_BEFORE_INSERT` BEFORE INSERT ON `stack` FOR EACH ROW BEGIN
+declare id int;
+set id=new.SrNO;
+insert into stack_audit values (id,cast(now() as char(15)),"inserted");
+END
+2) CREATE DEFINER=`root`@`localhost` TRIGGER `stack_AFTER_UPDATE` AFTER UPDATE ON `stack` FOR EACH ROW BEGIN
+declare audit_string char(50);
+set audit_string=cast(new.SrNo as char(5));
+
+if old.SrNo <> new.SrNo then set audit_string=concat(audit_string,'id changed');
+end if;
+if old.question <> new.question then set audit_string=concat(audit_string,' question changed');
+end if;
+if old.answer <> new.answer then set audit_string=concat(audit_string,' answer changed');
+end if;
+if old.attribute <> new.attribute then set audit_string=concat(audit_string,' attribute changed');
+end if;
+
+insert into stack_audit values (new.SrNo , audit_string, 'updated');
+
+END
+3) CREATE DEFINER=`root`@`localhost` TRIGGER `stack_BEFORE_DELETE` BEFORE DELETE ON `stack` FOR EACH ROW BEGIN
+declare id int;
+set id=old.SrNo;
+insert into stack_audit values(id,concat('record was deleted at ',cast(now() as char(25))),'deleted');
+END
+
+table: string
+1) CREATE DEFINER=`root`@`localhost` TRIGGER `string_BEFORE_INSERT` BEFORE INSERT ON `string` FOR EACH ROW BEGIN
+declare id int;
+set id=new.SrNo;
+insert into string_audit values (id, cast(now() as char(15)),"inserted");
+END
+2) CREATE DEFINER=`root`@`localhost` TRIGGER `string_AFTER_UPDATE` AFTER UPDATE ON `string` FOR EACH ROW BEGIN
+declare audit_string char(50);
+set audit_string=cast(new.SrNo as char(5));
+
+if old.SrNo <> new.SrNo then set audit_string=concat(audit_string,'id changed');
+end if;
+if old.question <> new.question then set audit_string=concat(audit_string,' question changed');
+end if;
+if old.answer <> new.answer then set audit_string=concat(audit_string,' answer changed');
+end if;
+if old.attribute <> new.attribute then set audit_string=concat(audit_string,' attribute changed');
+end if;
+
+insert into string_audit values (new.SrNo , audit_string, 'updated');
+
+END
+3) CREATE DEFINER=`root`@`localhost` TRIGGER `string_BEFORE_DELETE` BEFORE DELETE ON `string` FOR EACH ROW BEGIN
+declare id int;
+set id=old.SrNo;
+insert into string_audit values(id,concat('record was deleted at ',cast(now() as char(25))),'deleted');
+END
+
